@@ -3,7 +3,10 @@
 > **HARP — Human Authorization & Review Protocol**
 > Version 0.2 Draft
 
-Working reference implementations of the [HARP-CORE specification](src/spec/README.md) — a cryptographically verifiable human authorization layer for autonomous AI agent actions.
+Working reference implementations of the [HARP-CORE specification](https://github.com/harp-protocol/harp-spec) — a cryptographically verifiable human authorization layer for autonomous AI agent actions.
+
+
+[HARP Docs](https://harp-protocol.github.io/)
 
 ---
 
@@ -36,14 +39,14 @@ HARP ensures that every sensitive AI agent action is **explicitly bound to human
 
 ## Implementations
 
-| Language | Directory | Crypto Stack | Runner |
-|----------|-----------|-------------|--------|
-| **C#** | [`src/csharp/`](src/csharp/README.md) | `NSec` (libsodium) | `dotnet run` |
-| **Node.js** | [`src/node/`](src/node/README.md) | `libsodium-wrappers-sumo` + `node:crypto` | `node` |
-| **Python** | [`src/python/`](src/python/README.md) | `PyNaCl` + `hashlib` | `python` |
-| **TypeScript** | [`src/typescript/`](src/typescript/README.md) | `libsodium-wrappers-sumo` + `node:crypto` | `tsx` |
-| **Go** | [`src/go/`](src/go/README.md) | `x/crypto` + `crypto/ed25519` (stdlib) | `go run` |
-| **Rust** | [`src/rust/`](src/rust/README.md) | RustCrypto (pure Rust, no C deps) | `cargo run` |
+| Language       | Directory                                     | Crypto Stack                              | Runner       |
+| -------------- | --------------------------------------------- | ----------------------------------------- | ------------ |
+| **C#**         | [`src/csharp/`](src/csharp/README.md)         | `NSec` (libsodium)                        | `dotnet run` |
+| **Node.js**    | [`src/node/`](src/node/README.md)             | `libsodium-wrappers-sumo` + `node:crypto` | `node`       |
+| **Python**     | [`src/python/`](src/python/README.md)         | `PyNaCl` + `hashlib`                      | `python`     |
+| **TypeScript** | [`src/typescript/`](src/typescript/README.md) | `libsodium-wrappers-sumo` + `node:crypto` | `tsx`        |
+| **Go**         | [`src/go/`](src/go/README.md)                 | `x/crypto` + `crypto/ed25519` (stdlib)    | `go run`     |
+| **Rust**       | [`src/rust/`](src/rust/README.md)             | RustCrypto (pure Rust, no C deps)         | `cargo run`  |
 
 All six implementations are **wire-compatible** — artifacts encrypted by any implementation can be decrypted by the others, and decisions signed by any can be verified by the others, provided the same key material is used.
 
@@ -91,14 +94,14 @@ Each implementation follows the same **4-step demo flow**:
 
 Replace `<runner>` with the language-specific command:
 
-| Language | Step 1 & 3 | Step 2 | Step 4 |
-|----------|-----------|--------|--------|
-| C# | `dotnet run --project Harp.Approver` | `dotnet run --project Harp.Executor` | `dotnet run --project Harp.Enforcer` |
-| Node.js | `node harp-approver.mjs` | `node harp-executor.mjs` | `node harp-enforcer.mjs` |
-| Python | `python harp_approver.py` | `python harp_executor.py` | `python harp_enforcer.py` |
-| TypeScript | `npx tsx src/harp-approver.ts` | `npx tsx src/harp-executor.ts` | `npx tsx src/harp-enforcer.ts` |
-| Go | `go run ./cmd/harp-approver/` | `go run ./cmd/harp-executor/` | `go run ./cmd/harp-enforcer/` |
-| Rust | `cargo run --bin harp-approver` | `cargo run --bin harp-executor` | `cargo run --bin harp-enforcer` |
+| Language   | Step 1 & 3                           | Step 2                               | Step 4                               |
+| ---------- | ------------------------------------ | ------------------------------------ | ------------------------------------ |
+| C#         | `dotnet run --project Harp.Approver` | `dotnet run --project Harp.Executor` | `dotnet run --project Harp.Enforcer` |
+| Node.js    | `node harp-approver.mjs`             | `node harp-executor.mjs`             | `node harp-enforcer.mjs`             |
+| Python     | `python harp_approver.py`            | `python harp_executor.py`            | `python harp_enforcer.py`            |
+| TypeScript | `npx tsx src/harp-approver.ts`       | `npx tsx src/harp-executor.ts`       | `npx tsx src/harp-enforcer.ts`       |
+| Go         | `go run ./cmd/harp-approver/`        | `go run ./cmd/harp-executor/`        | `go run ./cmd/harp-enforcer/`        |
+| Rust       | `cargo run --bin harp-approver`      | `cargo run --bin harp-executor`      | `cargo run --bin harp-enforcer`      |
 
 All implementations write generated files to `C:\tmp\harp\` by default.
 
@@ -108,14 +111,14 @@ All implementations write generated files to `C:\tmp\harp\` by default.
 
 All implementations share the same cryptographic architecture:
 
-| Function | Algorithm | Purpose |
-|----------|-----------|---------|
-| Key Exchange | **X25519** | Derive shared secret between HE and MA |
-| Key Derivation | **HKDF-SHA256** | Derive symmetric AEAD key from shared secret |
-| Payload Encryption | **XChaCha20-Poly1305** | AEAD encryption of artifact payload |
-| Artifact Hashing | **SHA-256** | Deterministic hash of canonicalized artifact |
-| Decision Signing | **Ed25519** | Human-bound cryptographic approval signature |
-| Canonicalization | **RFC 8785 (JCS)** | Deterministic JSON for cross-platform hash agreement |
+| Function           | Algorithm              | Purpose                                              |
+| ------------------ | ---------------------- | ---------------------------------------------------- |
+| Key Exchange       | **X25519**             | Derive shared secret between HE and MA               |
+| Key Derivation     | **HKDF-SHA256**        | Derive symmetric AEAD key from shared secret         |
+| Payload Encryption | **XChaCha20-Poly1305** | AEAD encryption of artifact payload                  |
+| Artifact Hashing   | **SHA-256**            | Deterministic hash of canonicalized artifact         |
+| Decision Signing   | **Ed25519**            | Human-bound cryptographic approval signature         |
+| Canonicalization   | **RFC 8785 (JCS)**     | Deterministic JSON for cross-platform hash agreement |
 
 ---
 
@@ -168,14 +171,14 @@ All implementations share the same cryptographic architecture:
 
 ## Security Guarantees
 
-| Guarantee | Mechanism |
-|-----------|-----------|
-| ✔ Confidential payload | XChaCha20-Poly1305 AEAD with X25519 key exchange |
-| ✔ Integrity | AEAD authentication + AAD binding |
-| ✔ Cryptographic approval binding | Ed25519 signature over `artifactHash` |
-| ✔ Signature authenticity | Ed25519 verification with known `signerKeyId` |
-| ✔ Replay resistance | Nonce journal + expiration enforcement |
-| ✔ Deterministic canonicalization | RFC 8785 JCS for cross-platform hash agreement |
+| Guarantee                        | Mechanism                                        |
+| -------------------------------- | ------------------------------------------------ |
+| ✔ Confidential payload           | XChaCha20-Poly1305 AEAD with X25519 key exchange |
+| ✔ Integrity                      | AEAD authentication + AAD binding                |
+| ✔ Cryptographic approval binding | Ed25519 signature over `artifactHash`            |
+| ✔ Signature authenticity         | Ed25519 verification with known `signerKeyId`    |
+| ✔ Replay resistance              | Nonce journal + expiration enforcement           |
+| ✔ Deterministic canonicalization | RFC 8785 JCS for cross-platform hash agreement   |
 
 ---
 
